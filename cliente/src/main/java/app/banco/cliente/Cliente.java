@@ -35,6 +35,10 @@ public class Cliente {
         return solicitar(new DepositarDineroTransaccion(numeroCuenta, saldo));
     }
 
+    public int retirarSaldo(int numeroCuenta, int saldo) throws Exception {
+        return solicitar(new RetirarDineroTransaccion(numeroCuenta, saldo));
+    }
+
     private int solicitar(Transaccion transaccion) throws Exception {
         Socket conexion = new Socket("localhost", PUERTO);
         DataInputStream entrada = new DataInputStream(conexion.getInputStream());

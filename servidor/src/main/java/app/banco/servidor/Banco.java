@@ -204,6 +204,33 @@ public class Banco implements ProtocoloLector {
             return 0;
         }
 
+        if (solicitud instanceof RetirarDineroTransaccion) {
+
+            RetirarDineroTransaccion peticion = (RetirarDineroTransaccion) solicitud;
+            CuentaDeAhorros cuenta = buscarCuentaPorId(peticion.getCuentaAhorros());
+            int valor = peticion.getValor();
+
+            if (cuenta == null) {
+                // -1: ¡No existe la cuenta que se pide!
+                return -1;
+            }
+
+            if (valor <= 0){
+                // -2: ¡No puede retirar valores ni cero ni valores negativos!
+                return -2;
+            }
+
+            if (cuenta.getSaldo() >= valor){
+                // -3: ¡Saldo insuficiente!
+                return -3;
+            }
+
+            cuenta.setSaldo(cuenta.getSaldo()+valor);
+
+            // 0: Exitoso.
+            return 0;
+        }
+
         return -1;
     }
 
