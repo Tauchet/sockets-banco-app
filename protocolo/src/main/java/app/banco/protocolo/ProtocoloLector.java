@@ -1,9 +1,9 @@
 package app.banco.protocolo;
 
-import app.banco.protocolo.paquete.Paquete;
+import app.banco.protocolo.transaccion.Transaccion;
 
 public interface ProtocoloLector {
 
-    int resolver(Paquete solicitud);
+    int resolver(Transaccion solicitud);
 
 }

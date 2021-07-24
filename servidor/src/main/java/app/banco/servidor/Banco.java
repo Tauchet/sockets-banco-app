@@ -1,7 +1,7 @@
 package app.banco.servidor;
 
 import app.banco.protocolo.ProtocoloLector;
-import app.banco.protocolo.paquete.*;
+import app.banco.protocolo.transaccion.*;
 import app.banco.servidor.cuenta.Bolsillo;
 import app.banco.servidor.cuenta.CuentaDeAhorros;
 
@@ -56,11 +56,11 @@ public class Banco implements ProtocoloLector {
     }
 
     @Override
-    public int resolver(Paquete solicitud) {
+    public int resolver(Transaccion solicitud) {
 
-        if (solicitud instanceof AbrirCuentaPaquete) {
+        if (solicitud instanceof AbrirCuentaTransaccion) {
 
-            AbrirCuentaPaquete peticion = (AbrirCuentaPaquete) solicitud;
+            AbrirCuentaTransaccion peticion = (AbrirCuentaTransaccion) solicitud;
             if (buscarCuentaPorNombre(peticion.getNombreUsuario()) != null) {
                 // -1: ¡Ya existe una Cuenta con este nombre!
                 return -1;
@@ -73,9 +73,9 @@ public class Banco implements ProtocoloLector {
 
         }
 
-        if (solicitud instanceof AbrirBolsilloPaquete) {
+        if (solicitud instanceof AbrirBolsilloTransaccion) {
 
-            AbrirBolsilloPaquete peticion = (AbrirBolsilloPaquete) solicitud;
+            AbrirBolsilloTransaccion peticion = (AbrirBolsilloTransaccion) solicitud;
             CuentaDeAhorros cuenta = buscarCuentaPorId(peticion.getCuentaAhorros());
 
             if (cuenta == null) {
@@ -96,9 +96,9 @@ public class Banco implements ProtocoloLector {
             return 0;
         }
 
-        if (solicitud instanceof CancelarBolsilloPaquete) {
+        if (solicitud instanceof CancelarBolsilloTransaccion) {
 
-            CancelarBolsilloPaquete peticion = (CancelarBolsilloPaquete) solicitud;
+            CancelarBolsilloTransaccion peticion = (CancelarBolsilloTransaccion) solicitud;
             Bolsillo bolsillo = this.bolsillos.remove(peticion.getBolsilloId());
 
             if (bolsillo == null) {
@@ -110,12 +110,12 @@ public class Banco implements ProtocoloLector {
             cancelarBolsillo(bolsillo);
 
             // 0: Exitoso.
-            return 0;
+            return bolsillo.getSaldo();
         }
 
-        if (solicitud instanceof CancelarCuentaPaquete) {
+        if (solicitud instanceof CancelarCuentaTransaccion) {
 
-            CancelarCuentaPaquete peticion = (CancelarCuentaPaquete) solicitud;
+            CancelarCuentaTransaccion peticion = (CancelarCuentaTransaccion) solicitud;
             CuentaDeAhorros cuenta = buscarCuentaPorId(peticion.getCuentaAhorros());
 
             if (cuenta == null) {
@@ -139,9 +139,9 @@ public class Banco implements ProtocoloLector {
             return 0;
         }
 
-        if (solicitud instanceof ConsultarPaquete) {
+        if (solicitud instanceof ConsultarTransaccion) {
 
-            ConsultarPaquete peticion = (ConsultarPaquete) solicitud;
+            ConsultarTransaccion peticion = (ConsultarTransaccion) solicitud;
             String codigo = peticion.getCodigo();
 
             // Posible bolsillo

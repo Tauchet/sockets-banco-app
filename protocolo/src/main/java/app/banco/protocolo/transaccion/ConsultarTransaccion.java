@@ -1,18 +1,21 @@
-package app.banco.protocolo.paquete;
+package app.banco.protocolo.transaccion;
 
-import app.banco.protocolo.TipoPaquete;
+import app.banco.protocolo.TipoTransaccion;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class ConsultarPaquete implements Paquete {
+public class ConsultarTransaccion extends Transaccion {
 
     private String codigo;
 
-    public ConsultarPaquete() {}
+    public ConsultarTransaccion() {
+        super(TipoTransaccion.CONSULTAR);
+    }
 
-    public ConsultarPaquete(String codigo) {
+    public ConsultarTransaccion(String codigo) {
+        super(TipoTransaccion.CONSULTAR);
         this.codigo = codigo;
     }
 
@@ -30,10 +33,6 @@ public class ConsultarPaquete implements Paquete {
         salida.writeUTF(this.codigo);
     }
 
-    @Override
-    public TipoPaquete getId() {
-        return TipoPaquete.CONSULTAR;
-    }
 
 
 }

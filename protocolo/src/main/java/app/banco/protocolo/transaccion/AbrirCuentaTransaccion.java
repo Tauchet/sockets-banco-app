@@ -1,18 +1,21 @@
-package app.banco.protocolo.paquete;
+package app.banco.protocolo.transaccion;
 
-import app.banco.protocolo.TipoPaquete;
+import app.banco.protocolo.TipoTransaccion;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class AbrirCuentaPaquete implements Paquete {
+public class AbrirCuentaTransaccion extends Transaccion {
 
     private String nombreUsuario;
 
-    public AbrirCuentaPaquete() {}
+    public AbrirCuentaTransaccion() {
+        super(TipoTransaccion.ABRIR_CUENTA);
+    }
 
-    public AbrirCuentaPaquete(String nombreUsuario) {
+    public AbrirCuentaTransaccion(String nombreUsuario) {
+        super(TipoTransaccion.ABRIR_CUENTA);
         this.nombreUsuario = nombreUsuario;
     }
 
@@ -28,11 +31,6 @@ public class AbrirCuentaPaquete implements Paquete {
     @Override
     public void escribir(DataOutputStream salida) throws IOException {
         salida.writeUTF(this.nombreUsuario);
-    }
-
-    @Override
-    public TipoPaquete getId() {
-        return TipoPaquete.ABRIR_CUENTA;
     }
 
 }

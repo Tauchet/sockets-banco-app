@@ -1,6 +1,6 @@
 package app.banco.protocolo;
 
-import app.banco.protocolo.paquete.Paquete;
+import app.banco.protocolo.transaccion.Transaccion;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -9,10 +9,12 @@ public class ProtocoloManager {
 
     public static void responder(DataInputStream entrada, DataOutputStream salida, ProtocoloLector lector) throws Exception {
 
+        long tiempo = entrada.readLong();
         String tipoId = entrada.readUTF();
-        TipoPaquete tipoPaquete = TipoPaquete.valueOf(tipoId.toUpperCase());
+        TipoTransaccion tipoTransaccion = TipoTransaccion.valueOf(tipoId.toUpperCase());
 
-        Paquete peticion = tipoPaquete.crear();
+        Transaccion peticion = tipoTransaccion.crear();
+        peticion.setTiempo(tiempo);
         peticion.leer(entrada);
 
         // Tiene un resultado
@@ -20,8 +22,9 @@ public class ProtocoloManager {
 
     }
 
-    public static int solicitar(Paquete peticion, DataInputStream entrada, DataOutputStream salida) throws Exception {
+    public static int solicitar(Transaccion peticion, DataInputStream entrada, DataOutputStream salida) throws Exception {
 
+        salida.writeLong(peticion.getTiempo());
         salida.writeUTF(peticion.getId().name());
         peticion.escribir(salida);
 
