@@ -21,6 +21,7 @@ public class AplicacionCLI {
             System.out.println(" 4. Cancelar cuenta de ahorros.");
             System.out.println(" 5. Depositar dinero en una cuenta de ahorros.");
             System.out.println(" 6. Retirar dinero de una cuenta de ahorros.");
+            System.out.println(" 7. Trasladar dinero de una cuenta de ahorros a su bolsillo.");
             System.out.println(" 8. Consultar saldo de cuenta o bolsillo.");
             System.out.println(" 10. Salir de la aplicación.");
             System.out.println("=========================================");
@@ -109,9 +110,9 @@ public class AplicacionCLI {
                 case 5: {
 
                     int cuentaAhorros = leerEntero("¿# de Cuenta de Ahorros?");
-                    int saldo = leerEntero("¿Cuánto dinero quiere depositar?");
+                    int valor = leerEntero("¿Cuánto dinero quiere depositar?");
 
-                    int resultado = cliente.depositarSaldo(cuentaAhorros, saldo);
+                    int resultado = cliente.depositarSaldo(cuentaAhorros, valor);
 
                     if (resultado == -1) {
                         System.out.println("¡No existe la cuenta de ahorros!");
@@ -122,7 +123,7 @@ public class AplicacionCLI {
                     }
 
                     if (resultado == 0) {
-                        System.out.println("¡Se han depositado $"+saldo+" pesos a su cuenta de ahorros!");
+                        System.out.println("¡Se han depositado $"+valor+" pesos a su cuenta de ahorros!");
                     }
 
                     break;
@@ -130,9 +131,9 @@ public class AplicacionCLI {
                 case 6: {
 
                     int cuentaAhorros = leerEntero("¿# de Cuenta de Ahorros?");
-                    int saldo = leerEntero("¿Cuánto dinero quiere depositar?");
+                    int valor = leerEntero("¿Cuánto dinero quiere depositar?");
 
-                    int resultado = cliente.retirarSaldo(cuentaAhorros, saldo);
+                    int resultado = cliente.retirarSaldo(cuentaAhorros, valor);
 
                     if (resultado == -1) {
                         System.out.println("¡No existe la cuenta de ahorros!");
@@ -147,7 +148,37 @@ public class AplicacionCLI {
                     }
 
                     if (resultado == 0) {
-                        System.out.println("¡Se han retirado $"+saldo+" pesos a su cuenta de ahorros!");
+                        System.out.println("¡Se han retirado $"+valor+" pesos de su cuenta de ahorros!");
+                    }
+
+                    break;
+                }
+
+                case 7: {
+
+                    int cuentaAhorros = leerEntero("¿# de Cuenta de Ahorros?");
+                    int valor = leerEntero("¿Cuánto dinero quiere trasladar?");
+
+                    int resultado = cliente.trasladarSaldo(cuentaAhorros, valor);
+
+                    if (resultado == -1) {
+                        System.out.println("¡No existe la cuenta de ahorros!");
+                    }
+
+                    if (resultado == -2) {
+                        System.out.println("¡No puede trasladar valores ni cero ni valores negativos!");
+                    }
+
+                    if (resultado == -3) {
+                        System.out.println("¡Saldo insuficiente!");
+                    }
+
+                    if (resultado == -4){
+                        System.out.println("¡El bolsillo no existe!");
+                    }
+
+                    if (resultado == 0) {
+                        System.out.println("¡Se han trasladado $"+valor +" pesos a su bolsillo!");
                     }
 
                     break;
@@ -176,6 +207,8 @@ public class AplicacionCLI {
 
                     break;
                 }
+
+
 
                 case 10: {
                     System.out.println("¡Gracias por utilizar la aplicación!");

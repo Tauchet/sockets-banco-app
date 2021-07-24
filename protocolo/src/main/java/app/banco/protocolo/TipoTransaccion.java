@@ -10,7 +10,8 @@ public enum TipoTransaccion {
     CANCELAR_CUENTA (CancelarCuentaTransaccion.class),
     CONSULTAR (ConsultarTransaccion.class),
     DEPOSITAR (DepositarDineroTransaccion.class),
-    RETIRAR (RetirarDineroTransaccion.class);
+    RETIRAR (RetirarDineroTransaccion.class),
+    TRASLADAR (TrasladarDineroTransaccion.class);
 
     private final Class<? extends Transaccion> transaccion;
 

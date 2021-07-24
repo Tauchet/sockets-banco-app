@@ -31,12 +31,16 @@ public class Cliente {
         return solicitar(new ConsultarTransaccion(codigo));
     }
 
-    public int depositarSaldo(int numeroCuenta, int saldo) throws Exception {
-        return solicitar(new DepositarDineroTransaccion(numeroCuenta, saldo));
+    public int depositarSaldo(int numeroCuenta, int valor) throws Exception {
+        return solicitar(new DepositarDineroTransaccion(numeroCuenta, valor));
     }
 
-    public int retirarSaldo(int numeroCuenta, int saldo) throws Exception {
-        return solicitar(new RetirarDineroTransaccion(numeroCuenta, saldo));
+    public int retirarSaldo(int numeroCuenta, int valor) throws Exception {
+        return solicitar(new RetirarDineroTransaccion(numeroCuenta, valor));
+    }
+
+    public int trasladarSaldo(int numeroCuenta, int valor) throws Exception {
+        return solicitar(new TrasladarDineroTransaccion(numeroCuenta, valor));
     }
 
     private int solicitar(Transaccion transaccion) throws Exception {

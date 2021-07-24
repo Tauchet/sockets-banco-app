@@ -231,6 +231,39 @@ public class Banco implements ProtocoloLector {
             return 0;
         }
 
+        if (solicitud instanceof TrasladarDineroTransaccion) {
+
+            TrasladarDineroTransaccion peticion = (TrasladarDineroTransaccion) solicitud;
+            CuentaDeAhorros cuenta = buscarCuentaPorId(peticion.getCuentaAhorros());
+            int valor = peticion.getValor();
+
+            if (cuenta == null) {
+                // -1: ¡No existe la cuenta que se pide!
+                return -1;
+            }
+
+            if (valor <= 0){
+                // -2: ¡No puede trasladar valores ni cero ni valores negativos!
+                return -2;
+            }
+
+            if (cuenta.getSaldo() >= valor){
+                // -3: ¡Saldo insuficiente!
+                return -3;
+            }
+
+            if (cuenta.getBolsillo() == null){
+                // -4: !El bolsillo no existe!
+                return -4;
+            }
+
+            cuenta.setSaldo(cuenta.getSaldo()-valor);
+            cuenta.getBolsillo().setSaldo(cuenta.getBolsillo().getSaldo()+valor);
+
+            // 0: Exitoso.
+            return 0;
+        }
+
         return -1;
     }
 
