@@ -182,6 +182,28 @@ public class Banco implements ProtocoloLector {
             return cuenta.getSaldo();
         }
 
+        if (solicitud instanceof DepositarDineroTransaccion) {
+
+            DepositarDineroTransaccion peticion = (DepositarDineroTransaccion) solicitud;
+            CuentaDeAhorros cuenta = buscarCuentaPorId(peticion.getCuentaAhorros());
+            int valor = peticion.getValor();
+
+            if (cuenta == null) {
+                // -1: ¡No existe la cuenta que se pide!
+                return -1;
+            }
+
+            if (valor <= 0){
+                // -2: ¡No puede depositar valores ni cero ni valores negativos!
+                return -2;
+            }
+
+            cuenta.setSaldo(cuenta.getSaldo()+valor);
+
+            // 0: Exitoso.
+            return 0;
+        }
+
         return -1;
     }
 

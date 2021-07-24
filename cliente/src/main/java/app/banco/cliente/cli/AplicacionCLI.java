@@ -19,6 +19,7 @@ public class AplicacionCLI {
             System.out.println(" 2. Crear un bolsillo.");
             System.out.println(" 3. Cancelar un bolsillo.");
             System.out.println(" 4. Cancelar cuenta de ahorros.");
+            System.out.println(" 5. Depositar en una cuenta de ahorros.");
             System.out.println(" 8. Consultar saldo de cuenta o bolsillo.");
             System.out.println(" 10. Salir de la aplicación.");
             System.out.println("=========================================");
@@ -99,6 +100,28 @@ public class AplicacionCLI {
 
                     if (resultado == 0) {
                         System.out.println("¡La cuenta de ahorros ha sido eliminada!");
+                    }
+
+                    break;
+                }
+
+                case 5: {
+
+                    int cuentaAhorros = leerEntero("¿# de Cuenta de Ahorros?");
+                    int saldo = leerEntero("¿Cuánto dinero quiere depositar?");
+
+                    int resultado = cliente.depositarSaldo(cuentaAhorros, saldo);
+
+                    if (resultado == -1) {
+                        System.out.println("¡No existe la cuenta de ahorros!");
+                    }
+
+                    if (resultado == -2) {
+                        System.out.println("¡No puede depositar valores ni cero ni valores negativos!");
+                    }
+
+                    if (resultado == 0) {
+                        System.out.println("¡Se han depositado $"+saldo+" pesos a su cuenta de ahorros!");
                     }
 
                     break;

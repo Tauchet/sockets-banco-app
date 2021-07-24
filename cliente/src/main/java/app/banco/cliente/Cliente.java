@@ -31,6 +31,10 @@ public class Cliente {
         return solicitar(new ConsultarTransaccion(codigo));
     }
 
+    public int depositarSaldo(int numeroCuenta, int saldo) throws Exception {
+        return solicitar(new DepositarDineroTransaccion(numeroCuenta, saldo));
+    }
+
     private int solicitar(Transaccion transaccion) throws Exception {
         Socket conexion = new Socket("localhost", PUERTO);
         DataInputStream entrada = new DataInputStream(conexion.getInputStream());
