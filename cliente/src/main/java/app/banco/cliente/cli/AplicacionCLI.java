@@ -1,7 +1,15 @@
 package app.banco.cliente.cli;
 
 import app.banco.cliente.Cliente;
+import app.banco.protocolo.PaqueteLector;
+import app.banco.protocolo.ProtocoloManager;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class AplicacionCLI {
@@ -23,6 +31,7 @@ public class AplicacionCLI {
             System.out.println(" 6. Retirar dinero de una cuenta de ahorros.");
             System.out.println(" 7. Trasladar dinero de una cuenta de ahorros a su bolsillo.");
             System.out.println(" 8. Consultar saldo de cuenta o bolsillo.");
+            System.out.println(" 9. Cargar archivo de transacciones.");
             System.out.println(" 10. Salir de la aplicación.");
             System.out.println("=========================================");
 
@@ -31,184 +40,77 @@ public class AplicacionCLI {
             switch (opcion) {
 
                 case 1: {
-
                     String nombre = leerCadena("¿Cuál es el nombre de la cuenta?");
-                    int resultado = cliente.abrirCuenta(nombre);
-
-                    if (resultado == -1) {
-                        System.out.println("¡Ya existe una cuenta con este mismo nombre!");
-                    }
-
-                    if (resultado >= 0) {
-                        System.out.println("¡La cuenta ha sido creada correctamente!");
-                        System.out.println("# de Cuenta: " + resultado);
-                    }
-
+                    PaqueteLector resultado = cliente.abrirCuenta(nombre);
+                    System.out.println(resultado.leerCadena());
                     break;
                 }
 
                 case 2: {
-
                     int codigo = leerEntero("¿# de Cuenta de Ahorros?");
-                    int resultado = cliente.crearBolsillo(codigo);
-
-                    if (resultado == -1) {
-                        System.out.println("¡La cuenta no ha existido!");
-                    }
-
-                    if (resultado == -2) {
-                        System.out.println("¡Esta cuenta ya tiene un bolsillo!");
-                    }
-
-                    if (resultado == 0) {
-                        System.out.println("¡Ha sido creado correctamente!");
-                    }
-
+                    PaqueteLector resultado = cliente.crearBolsillo(codigo);
+                    System.out.println(resultado.leerCadena());
                     break;
                 }
 
                 case 3: {
-
                     String cadena = leerCadena("¿# del bosillo?");
-                    int resultado = cliente.cancelarBolsillo(cadena);
-
-                    if (resultado == -1) {
-                        System.out.println("¡No existe el bolsillo para cancelar!");
-                    }
-
-                    if (resultado >= 0) {
-                        System.out.println("¡Ha sido eliminado correctamente el bolsillo y se ha transferido " + resultado + " a la cuenta de ahorros!");
-                    }
-
+                    PaqueteLector resultado = cliente.cancelarBolsillo(cadena);
+                    System.out.println(resultado.leerCadena());
                     break;
                 }
 
                 case 4: {
-
                     int codigo = leerEntero("¿# de Cuenta de Ahorros?");
-                    int resultado = cliente.cancelarCuenta(codigo);
-
-                    if (resultado == -1) {
-                        System.out.println("¡No existe la cuenta de ahorros!");
-                    }
-
-                    if (resultado == -2) {
-                        System.out.println("¡Lo sentimos! La cuenta de ahorros buscada tiene vinculada un bolsillo.");
-                    }
-
-                    if (resultado == -3) {
-                        System.out.println("¡Lo sentimos! La cuenta de ahorros aún tiene saldo.");
-                    }
-
-                    if (resultado == 0) {
-                        System.out.println("¡La cuenta de ahorros ha sido eliminada!");
-                    }
-
+                    PaqueteLector resultado = cliente.cancelarCuenta(codigo);
+                    System.out.println(resultado.leerCadena());
                     break;
                 }
 
                 case 5: {
-
                     int cuentaAhorros = leerEntero("¿# de Cuenta de Ahorros?");
                     int valor = leerEntero("¿Cuánto dinero quiere depositar?");
-
-                    int resultado = cliente.depositarSaldo(cuentaAhorros, valor);
-
-                    if (resultado == -1) {
-                        System.out.println("¡No existe la cuenta de ahorros!");
-                    }
-
-                    if (resultado == -2) {
-                        System.out.println("¡No puede depositar valores ni cero ni valores negativos!");
-                    }
-
-                    if (resultado == 0) {
-                        System.out.println("¡Se han depositado $"+valor+" pesos a su cuenta de ahorros!");
-                    }
-
+                    PaqueteLector resultado = cliente.depositarSaldo(cuentaAhorros, valor);
+                    System.out.println(resultado.leerCadena());
                     break;
                 }
                 case 6: {
-
                     int cuentaAhorros = leerEntero("¿# de Cuenta de Ahorros?");
                     int valor = leerEntero("¿Cuánto dinero quiere depositar?");
-
-                    int resultado = cliente.retirarSaldo(cuentaAhorros, valor);
-
-                    if (resultado == -1) {
-                        System.out.println("¡No existe la cuenta de ahorros!");
-                    }
-
-                    if (resultado == -2) {
-                        System.out.println("¡No puede retirar valores ni cero ni valores negativos!");
-                    }
-
-                    if (resultado == -3) {
-                        System.out.println("¡Saldo insuficiente!");
-                    }
-
-                    if (resultado == 0) {
-                        System.out.println("¡Se han retirado $"+valor+" pesos de su cuenta de ahorros!");
-                    }
-
+                    PaqueteLector resultado = cliente.retirarSaldo(cuentaAhorros, valor);
+                    System.out.println(resultado.leerCadena());
                     break;
                 }
 
                 case 7: {
-
                     int cuentaAhorros = leerEntero("¿# de Cuenta de Ahorros?");
                     int valor = leerEntero("¿Cuánto dinero quiere trasladar?");
-
-                    int resultado = cliente.trasladarSaldo(cuentaAhorros, valor);
-
-                    if (resultado == -1) {
-                        System.out.println("¡No existe la cuenta de ahorros!");
-                    }
-
-                    if (resultado == -2) {
-                        System.out.println("¡No puede trasladar valores ni cero ni valores negativos!");
-                    }
-
-                    if (resultado == -3) {
-                        System.out.println("¡Saldo insuficiente!");
-                    }
-
-                    if (resultado == -4){
-                        System.out.println("¡El bolsillo no existe!");
-                    }
-
-                    if (resultado == 0) {
-                        System.out.println("¡Se han trasladado $"+valor +" pesos a su bolsillo!");
-                    }
-
+                    PaqueteLector resultado = cliente.trasladarSaldo(cuentaAhorros, valor);
+                    System.out.println(resultado.leerCadena());
                     break;
                 }
 
                 case 8: {
-
                     String codigo = leerCadena("¿# de Cuenta o Bolsillo?");
-                    int resultado = cliente.consultarSaldo(codigo);
-
-                    if (resultado == -1) {
-                        System.out.println("¡Los datos ingresados son incorrectos!");
-                    }
-
-                    if (resultado == -2) {
-                        System.out.println("¡Lo sentimos! El bolsillo buscado no existe.");
-                    }
-
-                    if (resultado == -3) {
-                        System.out.println("¡Lo sentimos! La cuenta de ahorros no se ha encontrado.");
-                    }
-
-                    if (resultado >= 0) {
-                        System.out.println("Saldo actual: " + resultado);
-                    }
-
+                    PaqueteLector resultado = cliente.consultarSaldo(codigo);
+                    System.out.println(resultado.leerCadena());
                     break;
                 }
 
-
+                case 9: {
+                    String archivoPath = leerCadena("¿Archivo?");
+                    PaqueteLector resultado = cliente.cargarArchivo(archivoPath);
+                    String mensaje = resultado.leerCadena();
+                    if (mensaje.equalsIgnoreCase("OK")) {
+                        List<String> log = resultado.leerLista();
+                        for (String linea: log) {
+                            System.out.println(linea);
+                        }
+                    } else {
+                        System.out.println(mensaje);
+                    }
+                    break;
+                }
 
                 case 10: {
                     System.out.println("¡Gracias por utilizar la aplicación!");

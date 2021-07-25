@@ -1,9 +1,9 @@
 package app.banco.protocolo.transaccion;
 
+import app.banco.protocolo.PaqueteEscritor;
+import app.banco.protocolo.PaqueteLector;
 import app.banco.protocolo.TipoTransaccion;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class ConsultarTransaccion extends Transaccion {
@@ -24,13 +24,13 @@ public class ConsultarTransaccion extends Transaccion {
     }
 
     @Override
-    public void leer(DataInputStream entrada) throws IOException {
-        this.codigo = entrada.readUTF();
+    public void leer(PaqueteLector entrada) throws IOException {
+        this.codigo = entrada.leerCadena();
     }
 
     @Override
-    public void escribir(DataOutputStream salida) throws IOException {
-        salida.writeUTF(this.codigo);
+    public void escribir(PaqueteEscritor salida) throws IOException {
+        salida.escribirCadena(this.codigo);
     }
 
 

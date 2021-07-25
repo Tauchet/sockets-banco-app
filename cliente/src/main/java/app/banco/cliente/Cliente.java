@@ -1,5 +1,6 @@
 package app.banco.cliente;
 
+import app.banco.protocolo.PaqueteLector;
 import app.banco.protocolo.transaccion.*;
 import app.banco.protocolo.ProtocoloManager;
 
@@ -11,39 +12,43 @@ public class Cliente {
 
     private final static int PUERTO = 8090;
 
-    public int abrirCuenta(String nombre) throws Exception {
+    public PaqueteLector abrirCuenta(String nombre) throws Exception {
         return solicitar(new AbrirCuentaTransaccion(nombre));
     }
 
-    public int cancelarCuenta(int codigo) throws Exception {
+    public PaqueteLector cancelarCuenta(int codigo) throws Exception {
         return solicitar(new CancelarCuentaTransaccion(codigo));
     }
 
-    public int crearBolsillo(int numeroCuenta) throws Exception {
+    public PaqueteLector crearBolsillo(int numeroCuenta) throws Exception {
         return solicitar(new AbrirBolsilloTransaccion(numeroCuenta));
     }
 
-    public int cancelarBolsillo(String bolsilloId) throws Exception {
+    public PaqueteLector cancelarBolsillo(String bolsilloId) throws Exception {
         return solicitar(new CancelarBolsilloTransaccion(bolsilloId));
     }
 
-    public int consultarSaldo(String codigo) throws Exception {
+    public PaqueteLector consultarSaldo(String codigo) throws Exception {
         return solicitar(new ConsultarTransaccion(codigo));
     }
 
-    public int depositarSaldo(int numeroCuenta, int valor) throws Exception {
+    public PaqueteLector depositarSaldo(int numeroCuenta, int valor) throws Exception {
         return solicitar(new DepositarDineroTransaccion(numeroCuenta, valor));
     }
 
-    public int retirarSaldo(int numeroCuenta, int valor) throws Exception {
+    public PaqueteLector retirarSaldo(int numeroCuenta, int valor) throws Exception {
         return solicitar(new RetirarDineroTransaccion(numeroCuenta, valor));
     }
 
-    public int trasladarSaldo(int numeroCuenta, int valor) throws Exception {
+    public PaqueteLector trasladarSaldo(int numeroCuenta, int valor) throws Exception {
         return solicitar(new TrasladarDineroTransaccion(numeroCuenta, valor));
     }
 
-    private int solicitar(Transaccion transaccion) throws Exception {
+    public PaqueteLector cargarArchivo(String archivo) throws Exception {
+        return solicitar(new CargarTransaccion(archivo));
+    }
+
+    private PaqueteLector solicitar(Transaccion transaccion) throws Exception {
         Socket conexion = new Socket("localhost", PUERTO);
         DataInputStream entrada = new DataInputStream(conexion.getInputStream());
         DataOutputStream salida = new DataOutputStream(conexion.getOutputStream());

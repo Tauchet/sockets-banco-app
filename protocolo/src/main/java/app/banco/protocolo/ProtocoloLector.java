@@ -4,6 +4,6 @@ import app.banco.protocolo.transaccion.Transaccion;
 
 public interface ProtocoloLector {
 
-    int resolver(Transaccion solicitud);
+    void resolver(Transaccion solicitud, PaqueteEscritor escritor);
 
 }

@@ -4,32 +4,59 @@ import app.banco.protocolo.transaccion.Transaccion;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 
 public class ProtocoloManager {
 
-    public static void responder(DataInputStream entrada, DataOutputStream salida, ProtocoloLector lector) throws Exception {
+    public static String resolverComando(String comando, ProtocoloLector lector) throws Exception {
 
-        long tiempo = entrada.readLong();
-        String tipoId = entrada.readUTF();
-        TipoTransaccion tipoTransaccion = TipoTransaccion.valueOf(tipoId.toUpperCase());
+        PaqueteLector paqueteLector = new PaqueteLector(comando);
+        PaqueteEscritor escritor = new PaqueteEscritor();
+
+        String tipoId = paqueteLector.leerCadena();
+        TipoTransaccion tipoTransaccion = null;
+        try {
+            tipoTransaccion = TipoTransaccion.valueOf(tipoId.toUpperCase());
+        } catch (Throwable ex) {
+            return "¡La opción no existe!";
+        }
 
         Transaccion peticion = tipoTransaccion.crear();
-        peticion.setTiempo(tiempo);
-        peticion.leer(entrada);
+        try {
+            peticion.leer(paqueteLector);
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            return "¡Los datos son inconsistentes!";
+        } catch (NumberFormatException ex) {
+            return "¡Los valores enteros son incorrectos!";
+        } catch (IOException e) {
+            return "¡Ha ocurrido un error inesperado!";
+        }
 
-        // Tiene un resultado
-        salida.writeInt(lector.resolver(peticion));
-
+        lector.resolver(peticion, escritor);
+        return escritor.resultado();
     }
 
-    public static int solicitar(Transaccion peticion, DataInputStream entrada, DataOutputStream salida) throws Exception {
+    public static void resolver(DataInputStream entrada, DataOutputStream salida, ProtocoloLector lector) throws Exception {
+        String comando = entrada.readUTF();
+        String resultado = resolverComando(comando, lector);
+        salida.writeUTF(resultado);
+        salida.flush();
+    }
 
-        salida.writeLong(peticion.getTiempo());
-        salida.writeUTF(peticion.getId().name());
-        peticion.escribir(salida);
+    public static PaqueteLector solicitar(
+            Transaccion transaccion,
+            DataInputStream entrada,
+            DataOutputStream salida) throws Exception {
+
+        PaqueteEscritor escritor = new PaqueteEscritor();
+
+        escritor.escribirCadena(transaccion.getId().name());
+        transaccion.escribir(escritor);
+
+        salida.writeUTF(escritor.resultado());
 
         // Resultado
-        return entrada.readInt();
+        return new PaqueteLector(entrada.readUTF());
 
     }
 

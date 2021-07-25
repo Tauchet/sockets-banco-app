@@ -11,7 +11,8 @@ public enum TipoTransaccion {
     CONSULTAR (ConsultarTransaccion.class),
     DEPOSITAR (DepositarDineroTransaccion.class),
     RETIRAR (RetirarDineroTransaccion.class),
-    TRASLADAR (TrasladarDineroTransaccion.class);
+    TRASLADAR (TrasladarDineroTransaccion.class),
+    CARGAR (CargarTransaccion.class);
 
     private final Class<? extends Transaccion> transaccion;
 

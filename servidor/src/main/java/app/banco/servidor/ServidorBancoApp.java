@@ -11,7 +11,7 @@ public class ServidorBancoApp {
 
     public static void main(String[] args) throws Exception {
 
-        Banco instancia = new Banco();
+        Banco banco = new Banco();
         ServerSocket servidor = new ServerSocket(8090);
         System.out.println("Se ha ejecutado el servidor.");
 
@@ -19,7 +19,7 @@ public class ServidorBancoApp {
             Socket socket = servidor.accept();
             DataInputStream entrada = new DataInputStream(socket.getInputStream());
             DataOutputStream salida = new DataOutputStream(socket.getOutputStream());
-            ProtocoloManager.responder(entrada, salida, instancia);
+            ProtocoloManager.resolver(entrada, salida, banco);
             socket.close();
         }
 

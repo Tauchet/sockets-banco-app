@@ -1,9 +1,9 @@
 package app.banco.protocolo.transaccion;
 
+import app.banco.protocolo.PaqueteEscritor;
+import app.banco.protocolo.PaqueteLector;
 import app.banco.protocolo.TipoTransaccion;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class RetirarDineroTransaccion extends Transaccion{
@@ -12,11 +12,11 @@ public class RetirarDineroTransaccion extends Transaccion{
     private int valor;
 
     public RetirarDineroTransaccion() {
-        super(TipoTransaccion.DEPOSITAR);
+        super(TipoTransaccion.RETIRAR);
     }
 
     public RetirarDineroTransaccion(int cuentaAhorros, int valor) {
-        super(TipoTransaccion.DEPOSITAR);
+        super(TipoTransaccion.RETIRAR);
         this.cuentaAhorros = cuentaAhorros;
         this.valor = valor;
     }
@@ -30,15 +30,15 @@ public class RetirarDineroTransaccion extends Transaccion{
     }
 
     @Override
-    public void leer(DataInputStream entrada) throws IOException {
-        this.cuentaAhorros = entrada.readInt();
-        this.valor = entrada.readInt();
+    public void leer(PaqueteLector entrada) throws IOException {
+        this.cuentaAhorros = entrada.leerEntero();
+        this.valor = entrada.leerEntero();
     }
 
     @Override
-    public void escribir(DataOutputStream salida) throws IOException {
-        salida.writeInt(this.cuentaAhorros);
-        salida.writeInt(this.valor);
+    public void escribir(PaqueteEscritor salida) throws IOException {
+        salida.escribirEntero(this.cuentaAhorros);
+        salida.escribirEntero(this.valor);
     }
 
 }
