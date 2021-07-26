@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="app.banco.cliente.gui.Ventana">
+  <grid id="27dc6" binding="panel" default-binding="true" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="63" y="91" width="783" height="195"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <tabbedpane id="819ba">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="200" height="200"/>
+          </grid>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="c1863" layout-manager="FlowLayout" hgap="5" vgap="20" flow-align="1">
+            <constraints>
+              <tabbedpane title="Abrir Cuenta"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="de936" layout-manager="BorderLayout" hgap="20" vgap="0">
+                <constraints/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="ae333" class="javax.swing.JLabel">
+                    <constraints border-constraint="West"/>
+                    <properties>
+                      <text value="Nombre Completo:"/>
+                    </properties>
+                  </component>
+                  <component id="ebe4e" class="javax.swing.JTextField" binding="abrirCuentaEntrada">
+                    <constraints border-constraint="Center"/>
+                    <properties>
+                      <columns value="50"/>
+                      <horizontalAlignment value="0"/>
+                      <text value=""/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <component id="7d91e" class="javax.swing.JButton" binding="abrirCuentaButton" default-binding="true">
+                <constraints/>
+                <properties>
+                  <text value="Abrir Cuenta"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="c0b33" layout-manager="FlowLayout" hgap="5" vgap="20" flow-align="1">
+            <constraints>
+              <tabbedpane title="Crear Bolsillo"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="792" layout-manager="BorderLayout" hgap="20" vgap="0">
+                <constraints/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="a086a" class="javax.swing.JLabel">
+                    <constraints border-constraint="West"/>
+                    <properties>
+                      <text value="# Número de Cuenta:"/>
+                    </properties>
+                  </component>
+                  <component id="281ab" class="javax.swing.JTextField" binding="crearBolsilloEntrada">
+                    <constraints border-constraint="Center"/>
+                    <properties>
+                      <columns value="50"/>
+                      <horizontalAlignment value="0"/>
+                      <text value=""/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <component id="452c7" class="javax.swing.JButton" binding="crearBolsilloButton">
+                <constraints/>
+                <properties>
+                  <text value="Crear Bolsillo"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="982b0" layout-manager="FlowLayout" hgap="5" vgap="20" flow-align="1">
+            <constraints>
+              <tabbedpane title="Cancelar Cuenta de Ahorros"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="ad942" layout-manager="BorderLayout" hgap="20" vgap="0">
+                <constraints/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="60073" class="javax.swing.JLabel">
+                    <constraints border-constraint="West"/>
+                    <properties>
+                      <text value="# Número de Cuenta:"/>
+                    </properties>
+                  </component>
+                  <component id="98489" class="javax.swing.JTextField" binding="cancelarCuentaEntrada">
+                    <constraints border-constraint="Center"/>
+                    <properties>
+                      <columns value="50"/>
+                      <horizontalAlignment value="0"/>
+                      <text value=""/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <component id="e6dc6" class="javax.swing.JButton" binding="cancelarCuentaButton">
+                <constraints/>
+                <properties>
+                  <text value="Cancelar Cuenta de Ahorros"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="db698" layout-manager="FlowLayout" hgap="5" vgap="20" flow-align="1">
+            <constraints>
+              <tabbedpane title="Cancelar Bolsillo"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="250d" layout-manager="BorderLayout" hgap="20" vgap="0">
+                <constraints/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="dab35" class="javax.swing.JLabel">
+                    <constraints border-constraint="West"/>
+                    <properties>
+                      <text value="# Numero del Bolsillo (#b)"/>
+                    </properties>
+                  </component>
+                  <component id="2c285" class="javax.swing.JTextField" binding="cancelarBolsilloEntrada">
+                    <constraints border-constraint="Center"/>
+                    <properties>
+                      <columns value="50"/>
+                      <horizontalAlignment value="0"/>
+                      <text value=""/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <component id="9ff9b" class="javax.swing.JButton" binding="cancelarBolsilloButton">
+                <constraints/>
+                <properties>
+                  <text value="Cancelar Bolsillo"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="844db" layout-manager="FlowLayout" hgap="5" vgap="20" flow-align="1">
+            <constraints>
+              <tabbedpane title="Depositar Dinero"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="281fc" layout-manager="BorderLayout" hgap="20" vgap="0">
+                <constraints/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="bc0d1" class="javax.swing.JLabel">
+                    <constraints border-constraint="West"/>
+                    <properties>
+                      <text value="# Número de Cuenta:"/>
+                    </properties>
+                  </component>
+                  <component id="1e844" class="javax.swing.JTextField" binding="depositarDineroEntrada">
+                    <constraints border-constraint="Center"/>
+                    <properties>
+                      <columns value="50"/>
+                      <horizontalAlignment value="0"/>
+                      <text value=""/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <grid id="b5f32" layout-manager="BorderLayout" hgap="20" vgap="0">
+                <constraints/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="37890" class="javax.swing.JLabel">
+                    <constraints border-constraint="West"/>
+                    <properties>
+                      <text value="Dinero a depositar:"/>
+                    </properties>
+                  </component>
+                  <component id="72fbe" class="javax.swing.JTextField" binding="depositarDineroValorEntrada">
+                    <constraints border-constraint="Center"/>
+                    <properties>
+                      <columns value="50"/>
+                      <horizontalAlignment value="0"/>
+                      <text value=""/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <component id="cab17" class="javax.swing.JButton" binding="depositarDineroButton">
+                <constraints/>
+                <properties>
+                  <text value="Depositar Dinero"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="c9d45" layout-manager="FlowLayout" hgap="5" vgap="20" flow-align="1">
+            <constraints>
+              <tabbedpane title="Retirar Dinero"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="bfd37" layout-manager="BorderLayout" hgap="20" vgap="0">
+                <constraints/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="7d414" class="javax.swing.JLabel">
+                    <constraints border-constraint="West"/>
+                    <properties>
+                      <text value="# Número de Cuenta:"/>
+                    </properties>
+                  </component>
+                  <component id="f0151" class="javax.swing.JTextField" binding="retirarDineroEntrada">
+                    <constraints border-constraint="Center"/>
+                    <properties>
+                      <columns value="50"/>
+                      <horizontalAlignment value="0"/>
+                      <text value=""/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <grid id="e89e7" layout-manager="BorderLayout" hgap="20" vgap="0">
+                <constraints/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="5978d" class="javax.swing.JLabel">
+                    <constraints border-constraint="West"/>
+                    <properties>
+                      <text value="Dinero a retirar:"/>
+                    </properties>
+                  </component>
+                  <component id="4f3d5" class="javax.swing.JTextField" binding="retirarDineroValorEntrada">
+                    <constraints border-constraint="Center"/>
+                    <properties>
+                      <columns value="51"/>
+                      <horizontalAlignment value="0"/>
+                      <text value=""/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <component id="5dd5d" class="javax.swing.JButton" binding="retirarDineroButton">
+                <constraints/>
+                <properties>
+                  <text value="Retirar Dinero"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="4bd9b" layout-manager="FlowLayout" hgap="5" vgap="20" flow-align="1">
+            <constraints>
+              <tabbedpane title="Trasladar dinero a bolsillo"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="120da" layout-manager="BorderLayout" hgap="20" vgap="0">
+                <constraints/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="af136" class="javax.swing.JLabel">
+                    <constraints border-constraint="West"/>
+                    <properties>
+                      <text value="# Número de Cuenta:"/>
+                    </properties>
+                  </component>
+                  <component id="2bee5" class="javax.swing.JTextField" binding="trasladarDineroEntrada">
+                    <constraints border-constraint="Center"/>
+                    <properties>
+                      <columns value="50"/>
+                      <horizontalAlignment value="0"/>
+                      <text value=""/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <grid id="d26cf" layout-manager="BorderLayout" hgap="20" vgap="0">
+                <constraints/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="33e5a" class="javax.swing.JLabel">
+                    <constraints border-constraint="West"/>
+                    <properties>
+                      <text value="Dinero a trasladar:"/>
+                    </properties>
+                  </component>
+                  <component id="6e3ca" class="javax.swing.JTextField" binding="trasladarDineroValorEntrada">
+                    <constraints border-constraint="Center"/>
+                    <properties>
+                      <columns value="51"/>
+                      <horizontalAlignment value="0"/>
+                      <text value=""/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <component id="3cb0e" class="javax.swing.JButton" binding="trasladarDineroButton">
+                <constraints/>
+                <properties>
+                  <text value="Trasladar Dinero"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="13342" layout-manager="FlowLayout" hgap="5" vgap="20" flow-align="1">
+            <constraints>
+              <tabbedpane title="Consultar saldo"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="14a43" layout-manager="BorderLayout" hgap="20" vgap="0">
+                <constraints/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="d1ebd" class="javax.swing.JLabel">
+                    <constraints border-constraint="West"/>
+                    <properties>
+                      <text value="# Número de Cuenta:"/>
+                    </properties>
+                  </component>
+                  <component id="fa4be" class="javax.swing.JTextField" binding="consultarEntrada">
+                    <constraints border-constraint="Center"/>
+                    <properties>
+                      <columns value="50"/>
+                      <horizontalAlignment value="0"/>
+                      <text value=""/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <component id="d6f44" class="javax.swing.JButton" binding="consultarButton">
+                <constraints/>
+                <properties>
+                  <text value="Consultar Dinero"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="be3f0" layout-manager="FlowLayout" hgap="5" vgap="20" flow-align="1">
+            <constraints>
+              <tabbedpane title="Cargar Archivo"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="baed9" layout-manager="BorderLayout" hgap="20" vgap="0">
+                <constraints/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="c9a57" class="javax.swing.JLabel">
+                    <constraints border-constraint="West"/>
+                    <properties>
+                      <text value="Dirección archivo:"/>
+                    </properties>
+                  </component>
+                  <component id="a152b" class="javax.swing.JTextField" binding="cargarArchivoEntrada">
+                    <constraints border-constraint="Center"/>
+                    <properties>
+                      <columns value="50"/>
+                      <horizontalAlignment value="0"/>
+                      <text value=""/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <component id="10252" class="javax.swing.JButton" binding="cargarArchivoButton">
+                <constraints/>
+                <properties>
+                  <text value="Cargar Archivo"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </tabbedpane>
+    </children>
+  </grid>
+</form>
