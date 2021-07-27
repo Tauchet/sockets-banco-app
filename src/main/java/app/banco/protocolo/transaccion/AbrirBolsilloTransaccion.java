@@ -33,5 +33,11 @@ public class AbrirBolsilloTransaccion extends Transaccion {
         salida.escribirEntero(this.cuentaAhorros);
     }
 
+    @Override
+    public String toString() {
+        return "AbrirBolsilloTransaccion{" +
+                "cuentaAhorros=" + cuentaAhorros +
+                '}';
+    }
 
 }

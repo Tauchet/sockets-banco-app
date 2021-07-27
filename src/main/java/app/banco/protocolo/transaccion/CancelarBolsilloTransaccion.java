@@ -33,4 +33,10 @@ public class CancelarBolsilloTransaccion extends Transaccion {
         salida.escribirCadena(this.bolsilloId);
     }
 
+    @Override
+    public String toString() {
+        return "CancelarBolsilloTransaccion{" +
+                "bolsilloId='" + bolsilloId + '\'' +
+                '}';
+    }
 }

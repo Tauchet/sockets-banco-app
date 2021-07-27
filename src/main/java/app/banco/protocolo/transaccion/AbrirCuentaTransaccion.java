@@ -33,4 +33,11 @@ public class AbrirCuentaTransaccion extends Transaccion {
         salida.escribirCadena(this.nombreCompleto);
     }
 
+    @Override
+    public String toString() {
+        return "AbrirCuentaTransaccion{" +
+                "nombreCompleto='" + nombreCompleto + '\'' +
+                '}';
+    }
+
 }

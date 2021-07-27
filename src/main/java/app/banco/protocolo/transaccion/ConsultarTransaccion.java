@@ -33,6 +33,11 @@ public class ConsultarTransaccion extends Transaccion {
         salida.escribirCadena(this.codigo);
     }
 
-
+    @Override
+    public String toString() {
+        return "ConsultarTransaccion{" +
+                "codigo='" + codigo + '\'' +
+                '}';
+    }
 
 }

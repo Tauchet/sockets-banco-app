@@ -41,4 +41,12 @@ public class RetirarDineroTransaccion extends Transaccion{
         salida.escribirEntero(this.valor);
     }
 
+    @Override
+    public String toString() {
+        return "RetirarDineroTransaccion{" +
+                "cuentaAhorros=" + cuentaAhorros +
+                ", valor=" + valor +
+                '}';
+    }
+
 }

@@ -36,28 +36,28 @@ public class AplicacionCLI {
                 case 1: {
                     String nombre = leerCadena("¿Cuál es el nombre de la cuenta?");
                     PaqueteLector resultado = cliente.abrirCuenta(nombre);
-                    System.out.println(resultado.leerCadena().replace("OK:", "ERROR:"));
+                    System.out.println(resultado.leerCadena().replace("OK:", "").replace("ERROR:", ""));
                     break;
                 }
 
                 case 2: {
                     int codigo = leerEntero("¿# de Cuenta de Ahorros?");
                     PaqueteLector resultado = cliente.crearBolsillo(codigo);
-                    System.out.println(resultado.leerCadena().replace("OK:", "ERROR:"));
+                    System.out.println(resultado.leerCadena().replace("OK:", "").replace("ERROR:", ""));
                     break;
                 }
 
                 case 3: {
                     String cadena = leerCadena("¿# del bosillo?");
                     PaqueteLector resultado = cliente.cancelarBolsillo(cadena);
-                    System.out.println(resultado.leerCadena().replace("OK:", "ERROR:"));
+                    System.out.println(resultado.leerCadena().replace("OK:", "").replace("ERROR:", ""));
                     break;
                 }
 
                 case 4: {
                     int codigo = leerEntero("¿# de Cuenta de Ahorros?");
                     PaqueteLector resultado = cliente.cancelarCuenta(codigo);
-                    System.out.println(resultado.leerCadena().replace("OK:", "ERROR:"));
+                    System.out.println(resultado.leerCadena().replace("OK:", "").replace("ERROR:", ""));
                     break;
                 }
 
@@ -65,15 +65,15 @@ public class AplicacionCLI {
                     int cuentaAhorros = leerEntero("¿# de Cuenta de Ahorros?");
                     int valor = leerEntero("¿Cuánto dinero quiere depositar?");
                     PaqueteLector resultado = cliente.depositarSaldo(cuentaAhorros, valor);
-                    System.out.println(resultado.leerCadena().replace("OK:", "ERROR:"));
+                    System.out.println(resultado.leerCadena().replace("OK:", "").replace("ERROR:", ""));
                     break;
                 }
 
                 case 6: {
                     int cuentaAhorros = leerEntero("¿# de Cuenta de Ahorros?");
-                    int valor = leerEntero("¿Cuánto dinero quiere depositar?");
+                    int valor = leerEntero("¿Cuánto dinero quiere retirar?");
                     PaqueteLector resultado = cliente.retirarSaldo(cuentaAhorros, valor);
-                    System.out.println(resultado.leerCadena().replace("OK:", "ERROR:"));
+                    System.out.println(resultado.leerCadena().replace("OK:", "").replace("ERROR:", ""));
                     break;
                 }
 
@@ -81,14 +81,14 @@ public class AplicacionCLI {
                     int cuentaAhorros = leerEntero("¿# de Cuenta de Ahorros?");
                     int valor = leerEntero("¿Cuánto dinero quiere trasladar?");
                     PaqueteLector resultado = cliente.trasladarSaldo(cuentaAhorros, valor);
-                    System.out.println(resultado.leerCadena().replace("OK:", "ERROR:"));
+                    System.out.println(resultado.leerCadena().replace("OK:", "").replace("ERROR:", ""));
                     break;
                 }
 
                 case 8: {
                     String codigo = leerCadena("¿# de Cuenta o Bolsillo?");
                     PaqueteLector resultado = cliente.consultarSaldo(codigo);
-                    System.out.println(resultado.leerCadena().replace("OK:", "ERROR:"));
+                    System.out.println(resultado.leerCadena().replace("OK:", "").replace("ERROR:", ""));
                     break;
                 }
 
@@ -102,7 +102,7 @@ public class AplicacionCLI {
                             System.out.println(linea);
                         }
                     } else {
-                        System.out.println(mensaje.replace("OK:", "ERROR:"));
+                        System.out.println(mensaje.replace("OK:", "").replace("ERROR:", ""));
                     }
                     break;
                 }

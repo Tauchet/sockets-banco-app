@@ -33,4 +33,11 @@ public class CancelarCuentaTransaccion extends Transaccion {
         salida.escribirEntero(this.cuentaAhorros);
     }
 
+    @Override
+    public String toString() {
+        return "CancelarCuentaTransaccion{" +
+                "cuentaAhorros=" + cuentaAhorros +
+                '}';
+    }
+
 }

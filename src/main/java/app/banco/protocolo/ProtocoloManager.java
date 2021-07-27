@@ -5,10 +5,12 @@ import app.banco.protocolo.transaccion.Transaccion;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.SocketAddress;
 
 public class ProtocoloManager {
 
-    public static String resolverComando(String comando, ProtocoloLector lector) throws Exception {
+    public static String resolverComando(SocketAddress clienteIp, String comando, ProtocoloLector lector) throws Exception {
 
         PaqueteLector paqueteLector = new PaqueteLector(comando);
         PaqueteEscritor escritor = new PaqueteEscritor();
@@ -32,13 +34,22 @@ public class ProtocoloManager {
             return "¡Ha ocurrido un error inesperado!";
         }
 
-        lector.resolver(peticion, escritor);
-        return escritor.resultado();
+
+        lector.resolver(clienteIp, peticion, escritor);
+        String resultado = escritor.resultado();
+
+        System.out.println("[Cliente] [" + clienteIp + "] ====================================");
+        System.out.println("[Cliente] [" + clienteIp + "] Ejecutando:");
+        System.out.println("[Cliente] [" + clienteIp + "]   - Transacción: " + peticion);
+        System.out.println("[Cliente] [" + clienteIp + "]   - Resultado: " + resultado);
+        System.out.println("[Cliente] [" + clienteIp + "] ====================================");
+
+        return resultado;
     }
 
-    public static void resolver(DataInputStream entrada, DataOutputStream salida, ProtocoloLector lector) throws Exception {
+    public static void resolver(SocketAddress clienteIp, DataInputStream entrada, DataOutputStream salida, ProtocoloLector lector) throws Exception {
         String comando = entrada.readUTF();
-        String resultado = resolverComando(comando, lector);
+        String resultado = resolverComando(clienteIp, comando, lector);
         salida.writeUTF(resultado);
         salida.flush();
     }

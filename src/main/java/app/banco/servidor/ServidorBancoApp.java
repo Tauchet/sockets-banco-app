@@ -19,7 +19,7 @@ public class ServidorBancoApp {
             Socket socket = servidor.accept();
             DataInputStream entrada = new DataInputStream(socket.getInputStream());
             DataOutputStream salida = new DataOutputStream(socket.getOutputStream());
-            ProtocoloManager.resolver(entrada, salida, banco);
+            ProtocoloManager.resolver(socket.getRemoteSocketAddress(), entrada, salida, banco);
             socket.close();
         }
 
