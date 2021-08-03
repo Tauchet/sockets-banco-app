@@ -48,7 +48,7 @@ public class Cliente {
     }
 
     private PaqueteLector solicitar(Transaccion transaccion) throws Exception {
-        Socket conexion = new Socket(Configuracion.SERVIDOR, Configuracion.PUERTO);
+        Socket conexion = new Socket(Configuracion.CLIENTE_SERVIDOR, Configuracion.CLIENTE_PUERTO);
         DataInputStream entrada = new DataInputStream(conexion.getInputStream());
         DataOutputStream salida = new DataOutputStream(conexion.getOutputStream());
         return ProtocoloManager.solicitar(transaccion, entrada, salida);

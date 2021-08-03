@@ -13,7 +13,7 @@ public class ServidorBancoApp {
     public static void main(String[] args) throws Exception {
 
         Banco banco = new Banco();
-        ServerSocket servidor = new ServerSocket(Configuracion.PUERTO);
+        ServerSocket servidor = new ServerSocket(Configuracion.SERVIDOR_PUERTO);
         System.out.println("Se ha ejecutado el servidor.");
 
         while (true) {
