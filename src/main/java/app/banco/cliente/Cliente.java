@@ -1,5 +1,6 @@
 package app.banco.cliente;
 
+import app.banco.Configuracion;
 import app.banco.protocolo.PaqueteLector;
 import app.banco.protocolo.ProtocoloManager;
 import app.banco.protocolo.transaccion.*;
@@ -9,8 +10,6 @@ import java.io.DataOutputStream;
 import java.net.Socket;
 
 public class Cliente {
-
-    private final static int PUERTO = 8090;
 
     public PaqueteLector abrirCuenta(String nombre) throws Exception {
         return solicitar(new AbrirCuentaTransaccion(nombre));
@@ -49,7 +48,7 @@ public class Cliente {
     }
 
     private PaqueteLector solicitar(Transaccion transaccion) throws Exception {
-        Socket conexion = new Socket("localhost", PUERTO);
+        Socket conexion = new Socket(Configuracion.SERVIDOR, Configuracion.PUERTO);
         DataInputStream entrada = new DataInputStream(conexion.getInputStream());
         DataOutputStream salida = new DataOutputStream(conexion.getOutputStream());
         return ProtocoloManager.solicitar(transaccion, entrada, salida);
