@@ -367,7 +367,7 @@ public class Banco implements ProtocoloLector {
                 }
             }
 
-            resultado.escribirLista(resultado);
+            resultado.escribirLista(logEjecutado);
 
             return;
 
