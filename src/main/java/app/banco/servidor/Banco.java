@@ -373,7 +373,7 @@ public class Banco implements ProtocoloLector {
 
         }
 
-        resultado.escribirCadena("¡No se ha encontrado esta opción!");
+        resultado.escribirCadena("ERROR:¡No se ha encontrado esta opción!");
 
     }
 
