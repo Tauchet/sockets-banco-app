@@ -262,8 +262,8 @@ public class Ventana extends JFrame {
                     JOptionPane.showMessageDialog(this, mensaje.replace("ERROR:", ""), "¡Error en la solicitud!", JOptionPane.ERROR_MESSAGE);
                 } else {
                     List<String> log = resultado.leerLista();
-                    JOptionPane.showMessageDialog(this, mensaje.replace("OK:", ""),
-                            "¡Se ha completado la solicitud!\n\n" + String.join("\n\n", log),
+                    JOptionPane.showMessageDialog(this, String.join("\n\n", log),
+                            "¡Se ha completado la solicitud!",
                             JOptionPane.INFORMATION_MESSAGE);
                 }
 

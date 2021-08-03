@@ -41,4 +41,12 @@ public class TrasladarDineroTransaccion extends Transaccion{
         salida.escribirEntero(this.valor);
     }
 
+    @Override
+    public String toString() {
+        return "TrasladarDineroTransaccion{" +
+                "cuentaAhorros=" + cuentaAhorros +
+                ", valor=" + valor +
+                '}';
+    }
+
 }

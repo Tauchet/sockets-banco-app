@@ -10,6 +10,8 @@ import app.banco.servidor.cuenta.CuentaDeAhorros;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.net.InetAddress;
+import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -81,17 +83,12 @@ public class Banco implements ProtocoloLector {
     }
 
     @Override
-    public void resolver(Transaccion solicitud, PaqueteEscritor escritor) {
+    public void resolver(SocketAddress clienteIp, Transaccion solicitud, PaqueteEscritor escritor) {
 
         if (solicitud instanceof AbrirCuentaTransaccion) {
 
             AbrirCuentaTransaccion peticion = (AbrirCuentaTransaccion) solicitud;
             String nombre = eliminarEspacio(peticion.getNombreCompleto());
-
-            if (buscarCuentaPorNombre(nombre) != null) {
-                escritor.escribirCadena("ERROR:¡Ya existe una cuenta con este nombre!");
-                return;
-            }
 
             // Validar que sea Nombre Apellido
             if (!esTodoLetras(nombre)) {
@@ -106,6 +103,12 @@ public class Banco implements ProtocoloLector {
             }
 
             nombre = formatoNombre(nombre);
+
+            if (buscarCuentaPorNombre(nombre) != null) {
+                escritor.escribirCadena("ERROR:¡Ya existe una cuenta con este nombre!");
+                return;
+            }
+
             CuentaDeAhorros cuenta = abrirCuenta(nombre);
 
             // >= 0: Número de la app.banco.servidor.cuenta.
@@ -164,7 +167,7 @@ public class Banco implements ProtocoloLector {
 
             if (cuenta == null) {
                 // -1: ¡No existe la cuenta que se pide!
-                escritor.escribirCadena("ERROR:¡No existe el bolsillo que desea cancelar!");
+                escritor.escribirCadena("ERROR:¡No existe la cuenta a la que desea cancelar!");
                 return;
             }
 
@@ -226,12 +229,14 @@ public class Banco implements ProtocoloLector {
 
             if (cuenta == null) {
                 // -3: ¡La cuenta no existe!
-                escritor.escribirCadena("ERROR:¡No existe el bolsillo que desea cancelar!");
+                escritor.escribirCadena("ERROR:¡No existe la cuenta que deseas consultar!");
                 return;
             }
 
             // >=0: Exitoso.
             escritor.escribirCadena("OK:Saldo actual de la Cuenta de Ahorros: " + cuenta.getSaldo());
+            return;
+
         }
 
         if (solicitud instanceof DepositarDineroTransaccion) {
@@ -242,7 +247,7 @@ public class Banco implements ProtocoloLector {
 
             if (cuenta == null) {
                 // -1: ¡No existe la cuenta que se pide!
-                escritor.escribirCadena("ERROR:¡No existe el bolsillo que desea cancelar!");
+                escritor.escribirCadena("ERROR:¡No existe la cuenta a la que desea depositar!");
                 return;
             }
 
@@ -268,7 +273,7 @@ public class Banco implements ProtocoloLector {
 
             if (cuenta == null) {
                 // -1: ¡No existe la cuenta que se pide!
-                escritor.escribirCadena("ERROR:¡No existe el bolsillo que desea cancelar!");
+                escritor.escribirCadena("ERROR:¡No existe la cuenta que desea para retirar!");
                 return;
             }
 
@@ -278,13 +283,13 @@ public class Banco implements ProtocoloLector {
                 return;
             }
 
-            if (cuenta.getSaldo() >= valor){
+            if (cuenta.getSaldo() < valor){
                 // -3: ¡Saldo insuficiente!
                 escritor.escribirCadena("ERROR:¡Su saldo es insuficiente!");
                 return;
             }
 
-            cuenta.setSaldo(cuenta.getSaldo()+valor);
+            cuenta.setSaldo(cuenta.getSaldo()-valor);
 
             // 0: Exitoso.
             escritor.escribirCadena("OK:Se han retirado $" + valor + " pesos de tu cuenta de ahorros, ahora su saldo actual será: $" + cuenta.getSaldo());
@@ -300,7 +305,7 @@ public class Banco implements ProtocoloLector {
 
             if (cuenta == null) {
                 // -1: ¡No existe la cuenta que se pide!
-                escritor.escribirCadena("ERROR:¡No existe el bolsillo que desea cancelar!");
+                escritor.escribirCadena("ERROR:¡No existe la cuenta que desea utilizar!");
                 return;
             }
 
@@ -310,13 +315,13 @@ public class Banco implements ProtocoloLector {
                 return;
             }
 
-            if (cuenta.getSaldo() >= valor){
+            if (cuenta.getSaldo() < valor){
                 // -3: ¡Saldo insuficiente!
                 escritor.escribirCadena("ERROR:¡Su saldo es insuficiente!");
                 return;
             }
 
-            if (cuenta.getBolsillo() == null){
+            if (cuenta.getBolsillo() == null) {
                 escritor.escribirCadena("ERROR:¡No existe el bolsillo que desea cancelar!");
                 return;
             }
@@ -355,7 +360,7 @@ public class Banco implements ProtocoloLector {
                 try {
                     String linea = lineas.get(i);
                     resultado.add("[" + numeroLinea + "]: Ejecutar -> " + linea);
-                    resultado.add("[" + numeroLinea + "]: Resultado -> " + ProtocoloManager.resolverComando(linea, this));
+                    resultado.add("[" + numeroLinea + "]: Resultado -> " + ProtocoloManager.resolverComando(clienteIp, linea, this));
                 } catch (Throwable ex) {
                     resultado.add("[" + numeroLinea + "]: Ha ocurrido un error.");
                     ex.printStackTrace();

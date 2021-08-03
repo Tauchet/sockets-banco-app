@@ -71,7 +71,7 @@ public class AplicacionCLI {
 
                 case 6: {
                     int cuentaAhorros = leerEntero("¿# de Cuenta de Ahorros?");
-                    int valor = leerEntero("¿Cuánto dinero quiere depositar?");
+                    int valor = leerEntero("¿Cuánto dinero quiere retirar?");
                     PaqueteLector resultado = cliente.retirarSaldo(cuentaAhorros, valor);
                     System.out.println(resultado.leerCadena().replace("OK:", "").replace("ERROR:", ""));
                     break;

@@ -33,4 +33,11 @@ public class CargarTransaccion extends Transaccion {
         salida.escribirCadena(this.archivo);
     }
 
+    @Override
+    public String toString() {
+        return "CargarTransaccion{" +
+                "archivo='" + archivo + '\'' +
+                '}';
+    }
+
 }
