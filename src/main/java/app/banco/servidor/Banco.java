@@ -83,72 +83,72 @@ public class Banco implements ProtocoloLector {
     }
 
     @Override
-    public void resolver(SocketAddress clienteIp, Transaccion solicitud, PaqueteEscritor escritor) {
+    public void resolver(SocketAddress clienteIp, Transaccion transaccion, PaqueteEscritor resultado) {
 
-        if (solicitud instanceof AbrirCuentaTransaccion) {
+        if (transaccion instanceof AbrirCuentaTransaccion) {
 
-            AbrirCuentaTransaccion peticion = (AbrirCuentaTransaccion) solicitud;
+            AbrirCuentaTransaccion peticion = (AbrirCuentaTransaccion) transaccion;
             String nombre = eliminarEspacio(peticion.getNombreCompleto());
 
             // Validar que sea Nombre Apellido
             if (!esTodoLetras(nombre)) {
-                escritor.escribirCadena("ERROR:¡El nombre solo puede contener letras!");
+                resultado.escribirCadena("ERROR:¡El nombre solo puede contener letras!");
                 return;
             }
 
             String[] entradas = nombre.split(" ");
             if (entradas.length < 2) {
-                escritor.escribirCadena("ERROR:¡El nombre debe ser al menos Nombre Apellido! Ejemplo: Juan Gutierrez");
+                resultado.escribirCadena("ERROR:¡El nombre debe ser al menos Nombre Apellido! Ejemplo: Juan Gutierrez");
                 return;
             }
 
             nombre = formatoNombre(nombre);
 
             if (buscarCuentaPorNombre(nombre) != null) {
-                escritor.escribirCadena("ERROR:¡Ya existe una cuenta con este nombre!");
+                resultado.escribirCadena("ERROR:¡Ya existe una cuenta con este nombre!");
                 return;
             }
 
             CuentaDeAhorros cuenta = abrirCuenta(nombre);
 
             // >= 0: Número de la app.banco.servidor.cuenta.
-            escritor.escribirCadena("OK:¡La cuenta ha sido creada con exito con el número " + cuenta.getId() + "!");
+            resultado.escribirCadena("OK:¡La cuenta ha sido creada con exito con el número " + cuenta.getId() + "!");
             return;
 
         }
 
-        if (solicitud instanceof AbrirBolsilloTransaccion) {
+        if (transaccion instanceof AbrirBolsilloTransaccion) {
 
-            AbrirBolsilloTransaccion peticion = (AbrirBolsilloTransaccion) solicitud;
+            AbrirBolsilloTransaccion peticion = (AbrirBolsilloTransaccion) transaccion;
             CuentaDeAhorros cuenta = buscarCuentaPorId(peticion.getCuentaAhorros());
 
             if (cuenta == null) {
                 // -1: ¡No existe la cuenta que se pide!
-                escritor.escribirCadena("ERROR:¡La cuenta de ahorros no existe!");
+                resultado.escribirCadena("ERROR:¡La cuenta de ahorros no existe!");
                 return;
             }
 
             Bolsillo bolsillo = buscarBolsilloPorId(peticion.getCuentaAhorros() + "b");
 
             if (bolsillo != null) {
-                escritor.escribirCadena("ERROR:¡Esta cuenta ya tiene un bolsillo creado!");
+                resultado.escribirCadena("ERROR:¡Esta cuenta ya tiene un bolsillo creado!");
                 return;
             }
 
             crearBolsillo(cuenta);
 
-            escritor.escribirCadena("OK:¡El bolsillo ha sido creado con exito, con el número " + cuenta.getId() + "b!");
+            resultado.escribirCadena("OK:¡El bolsillo ha sido creado con exito, con el número " + cuenta.getId() + "b!");
             return;
 
         }
 
-        if (solicitud instanceof CancelarBolsilloTransaccion) {
+        if (transaccion instanceof CancelarBolsilloTransaccion) {
 
-            CancelarBolsilloTransaccion peticion = (CancelarBolsilloTransaccion) solicitud;
+            CancelarBolsilloTransaccion peticion = (CancelarBolsilloTransaccion) transaccion;
             Bolsillo bolsillo = this.bolsillos.remove(peticion.getBolsilloId());
 
             if (bolsillo == null) {
-                escritor.escribirCadena("ERROR:¡No existe el bolsillo que desea cancelar!");
+                resultado.escribirCadena("ERROR:¡No existe el bolsillo que desea cancelar!");
                 return;
             }
 
@@ -156,44 +156,44 @@ public class Banco implements ProtocoloLector {
             cancelarBolsillo(bolsillo);
 
             // 0: Exitoso.
-            escritor.escribirCadena("OK:¡Se ha cancelado completamente el bolsillo! Se han transferido $" + bolsillo.getSaldo() + " pesos a tu cuenta de ahorros.");
+            resultado.escribirCadena("OK:¡Se ha cancelado completamente el bolsillo! Se han transferido $" + bolsillo.getSaldo() + " pesos a tu cuenta de ahorros.");
             return;
         }
 
-        if (solicitud instanceof CancelarCuentaTransaccion) {
+        if (transaccion instanceof CancelarCuentaTransaccion) {
 
-            CancelarCuentaTransaccion peticion = (CancelarCuentaTransaccion) solicitud;
+            CancelarCuentaTransaccion peticion = (CancelarCuentaTransaccion) transaccion;
             CuentaDeAhorros cuenta = buscarCuentaPorId(peticion.getCuentaAhorros());
 
             if (cuenta == null) {
                 // -1: ¡No existe la cuenta que se pide!
-                escritor.escribirCadena("ERROR:¡No existe la cuenta a la que desea cancelar!");
+                resultado.escribirCadena("ERROR:¡No existe la cuenta a la que desea cancelar!");
                 return;
             }
 
             if (cuenta.getBolsillo() != null) {
                 // -2: Tiene un bolsillo anclado.
-                escritor.escribirCadena("ERROR:¡Esta cuenta tiene un bolsillo vinculado!");
+                resultado.escribirCadena("ERROR:¡Esta cuenta tiene un bolsillo vinculado!");
                 return;
             }
 
             if (cuenta.getSaldo() > 0) {
                 // -2: Esta cuenta aún tiene saldo.
-                escritor.escribirCadena("ERROR:¡Esta cuenta aún tiene saldo!");
+                resultado.escribirCadena("ERROR:¡Esta cuenta aún tiene saldo!");
                 return;
             }
 
             cancelarCuenta(cuenta);
 
             // 0: Exitoso.
-            escritor.escribirCadena("OK:¡Se ha cancelado correctamente la cuenta de ahorros!");
+            resultado.escribirCadena("OK:¡Se ha cancelado correctamente la cuenta de ahorros!");
             return;
 
         }
 
-        if (solicitud instanceof ConsultarTransaccion) {
+        if (transaccion instanceof ConsultarTransaccion) {
 
-            ConsultarTransaccion peticion = (ConsultarTransaccion) solicitud;
+            ConsultarTransaccion peticion = (ConsultarTransaccion) transaccion;
             String codigo = peticion.getCodigo();
 
             // Posible bolsillo
@@ -207,7 +207,7 @@ public class Banco implements ProtocoloLector {
             try {
                 codigoId = Integer.parseInt(codigo);
             } catch (Throwable ex) {
-                escritor.escribirCadena("ERROR:¡Los valores enteros son incorrectos!");
+                resultado.escribirCadena("ERROR:¡Los valores enteros son incorrectos!");
                 return;
             }
 
@@ -217,11 +217,11 @@ public class Banco implements ProtocoloLector {
 
                 if (bolsillo == null) {
                     // -2: ¡El bolsillo no existe!
-                    escritor.escribirCadena("ERROR:¡No existe el bolsillo que desea cancelar!");
+                    resultado.escribirCadena("ERROR:¡No existe el bolsillo que desea cancelar!");
                     return;
                 }
 
-                escritor.escribirCadena("OK:Saldo actual de bolsillo: " + bolsillo.getSaldo());
+                resultado.escribirCadena("OK:Saldo actual de bolsillo: " + bolsillo.getSaldo());
                 return;
             }
 
@@ -229,100 +229,100 @@ public class Banco implements ProtocoloLector {
 
             if (cuenta == null) {
                 // -3: ¡La cuenta no existe!
-                escritor.escribirCadena("ERROR:¡No existe la cuenta que deseas consultar!");
+                resultado.escribirCadena("ERROR:¡No existe la cuenta que deseas consultar!");
                 return;
             }
 
             // >=0: Exitoso.
-            escritor.escribirCadena("OK:Saldo actual de la Cuenta de Ahorros: " + cuenta.getSaldo());
+            resultado.escribirCadena("OK:Saldo actual de la Cuenta de Ahorros: " + cuenta.getSaldo());
             return;
 
         }
 
-        if (solicitud instanceof DepositarDineroTransaccion) {
+        if (transaccion instanceof DepositarDineroTransaccion) {
 
-            DepositarDineroTransaccion peticion = (DepositarDineroTransaccion) solicitud;
+            DepositarDineroTransaccion peticion = (DepositarDineroTransaccion) transaccion;
             CuentaDeAhorros cuenta = buscarCuentaPorId(peticion.getCuentaAhorros());
             int valor = peticion.getValor();
 
             if (cuenta == null) {
                 // -1: ¡No existe la cuenta que se pide!
-                escritor.escribirCadena("ERROR:¡No existe la cuenta a la que desea depositar!");
+                resultado.escribirCadena("ERROR:¡No existe la cuenta a la que desea depositar!");
                 return;
             }
 
             if (valor <= 0) {
                 // -2: ¡No puede depositar valores ni cero ni valores negativos!
-                escritor.escribirCadena("ERROR:¡El monto minímo de deposito debe ser mayor a 0!");
+                resultado.escribirCadena("ERROR:¡El monto minímo de deposito debe ser mayor a 0!");
                 return;
             }
 
             cuenta.setSaldo(cuenta.getSaldo()+valor);
 
             // 0: Exitoso.
-            escritor.escribirCadena("OK:Se han depositado $" + valor + " pesos a tu cuenta de ahorros, ahora su saldo actual será: $" + cuenta.getSaldo());
+            resultado.escribirCadena("OK:Se han depositado $" + valor + " pesos a tu cuenta de ahorros, ahora su saldo actual será: $" + cuenta.getSaldo());
             return;
 
         }
 
-        if (solicitud instanceof RetirarDineroTransaccion) {
+        if (transaccion instanceof RetirarDineroTransaccion) {
 
-            RetirarDineroTransaccion peticion = (RetirarDineroTransaccion) solicitud;
+            RetirarDineroTransaccion peticion = (RetirarDineroTransaccion) transaccion;
             CuentaDeAhorros cuenta = buscarCuentaPorId(peticion.getCuentaAhorros());
             int valor = peticion.getValor();
 
             if (cuenta == null) {
                 // -1: ¡No existe la cuenta que se pide!
-                escritor.escribirCadena("ERROR:¡No existe la cuenta que desea para retirar!");
+                resultado.escribirCadena("ERROR:¡No existe la cuenta que desea para retirar!");
                 return;
             }
 
             if (valor <= 0){
                 // -2: ¡No puede depositar valores ni cero ni valores negativos!
-                escritor.escribirCadena("ERROR:¡El monto minímo de retiro debe ser mayor a 0!");
+                resultado.escribirCadena("ERROR:¡El monto minímo de retiro debe ser mayor a 0!");
                 return;
             }
 
             if (cuenta.getSaldo() < valor){
                 // -3: ¡Saldo insuficiente!
-                escritor.escribirCadena("ERROR:¡Su saldo es insuficiente!");
+                resultado.escribirCadena("ERROR:¡Su saldo es insuficiente!");
                 return;
             }
 
             cuenta.setSaldo(cuenta.getSaldo()-valor);
 
             // 0: Exitoso.
-            escritor.escribirCadena("OK:Se han retirado $" + valor + " pesos de tu cuenta de ahorros, ahora su saldo actual será: $" + cuenta.getSaldo());
+            resultado.escribirCadena("OK:Se han retirado $" + valor + " pesos de tu cuenta de ahorros, ahora su saldo actual será: $" + cuenta.getSaldo());
             return;
 
         }
 
-        if (solicitud instanceof TrasladarDineroTransaccion) {
+        if (transaccion instanceof TrasladarDineroTransaccion) {
 
-            TrasladarDineroTransaccion peticion = (TrasladarDineroTransaccion) solicitud;
+            TrasladarDineroTransaccion peticion = (TrasladarDineroTransaccion) transaccion;
             CuentaDeAhorros cuenta = buscarCuentaPorId(peticion.getCuentaAhorros());
             int valor = peticion.getValor();
 
             if (cuenta == null) {
                 // -1: ¡No existe la cuenta que se pide!
-                escritor.escribirCadena("ERROR:¡No existe la cuenta que desea utilizar!");
+                resultado.escribirCadena("ERROR:¡No existe la cuenta que desea utilizar!");
                 return;
             }
 
             if (valor <= 0){
                 // -2: ¡No puede depositar valores ni cero ni valores negativos!
-                escritor.escribirCadena("ERROR:¡El monto minímo de retiro debe ser mayor a 0!");
+                resultado.escribirCadena("ERROR:¡El monto minímo de retiro debe ser mayor a 0!");
                 return;
             }
 
             if (cuenta.getSaldo() < valor){
                 // -3: ¡Saldo insuficiente!
-                escritor.escribirCadena("ERROR:¡Su saldo es insuficiente!");
+                resultado.escribirCadena("ERROR:¡Su saldo es insuficiente!");
                 return;
             }
 
             if (cuenta.getBolsillo() == null) {
-                escritor.escribirCadena("ERROR:¡No existe el bolsillo que desea cancelar!");
+                resultado.escribirCadena("ERROR:¡No existe el bolsillo que desea cancelar!");
                 return;
             }
 
@@ -330,50 +330,50 @@ public class Banco implements ProtocoloLector {
             cuenta.getBolsillo().setSaldo(cuenta.getBolsillo().getSaldo()+valor);
 
             // 0: Exitoso.
-            escritor.escribirCadena("OK:Se han trasladado $" + valor + " pesos de tu cuenta de ahorros a tu bolsillo, tu saldo de cuenta será: $" + cuenta.getSaldo() + " y tu saldo de bolsillo: $" + cuenta.getBolsillo().getSaldo());
+            resultado.escribirCadena("OK:Se han trasladado $" + valor + " pesos de tu cuenta de ahorros a tu bolsillo, tu saldo de cuenta será: $" + cuenta.getSaldo() + " y tu saldo de bolsillo: $" + cuenta.getBolsillo().getSaldo());
             return;
 
         }
 
-        if (solicitud instanceof CargarTransaccion) {
+        if (transaccion instanceof CargarTransaccion) {
 
-            CargarTransaccion peticion = (CargarTransaccion) solicitud;
+            CargarTransaccion peticion = (CargarTransaccion) transaccion;
             String archivoPath = peticion.getArchivo();
             File archivo = new File(archivoPath);
 
             if (!archivo.exists()) {
-                escritor.escribirCadena("ERROR:¡No existe el archivo que desea cargar!");
+                resultado.escribirCadena("ERROR:¡No existe el archivo que desea cargar!");
                 return;
             }
 
             List<String> lineas = leerArchivo(archivo);
 
             if (lineas.isEmpty()) {
-                escritor.escribirCadena("ERROR:¡El archivo se encuentra vacío!");
+                resultado.escribirCadena("ERROR:¡El archivo se encuentra vacío!");
                 return;
             }
 
-            List<String> resultado = new ArrayList<>();
-            escritor.escribirCadena("OK");
+            List<String> logEjecutado = new ArrayList<>();
+            resultado.escribirCadena("OK");
             for (int i = 0; i < lineas.size(); i++) {
                 int numeroLinea = i + 1;
                 try {
                     String linea = lineas.get(i);
-                    resultado.add("[" + numeroLinea + "]: Ejecutar -> " + linea);
-                    resultado.add("[" + numeroLinea + "]: Resultado -> " + ProtocoloManager.resolverComando(clienteIp, linea, this));
+                    logEjecutado.add("[" + numeroLinea + "]: Ejecutar -> " + linea);
+                    logEjecutado.add("[" + numeroLinea + "]: Resultado -> " + ProtocoloManager.resolverComando(clienteIp, linea, this));
                 } catch (Throwable ex) {
-                    resultado.add("[" + numeroLinea + "]: Ha ocurrido un error.");
+                    logEjecutado.add("[" + numeroLinea + "]: Ha ocurrido un error.");
                     ex.printStackTrace();
                 }
             }
 
-            escritor.escribirLista(resultado);
+            resultado.escribirLista(resultado);
 
             return;
 
         }
 
-        escritor.escribirCadena("¡No se ha encontrado esta opción!");
+        resultado.escribirCadena("¡No se ha encontrado esta opción!");
 
     }
 

@@ -15,32 +15,34 @@ public class ProtocoloManager {
         PaqueteLector paqueteLector = new PaqueteLector(comando);
         PaqueteEscritor escritor = new PaqueteEscritor();
 
+        // Leer el tipo de transacción
         String tipoId = paqueteLector.leerCadena();
-        TipoTransaccion tipoTransaccion = null;
+        TipoTransaccion tipoTransaccion;
         try {
             tipoTransaccion = TipoTransaccion.valueOf(tipoId.toUpperCase());
         } catch (Throwable ex) {
-            return "¡La opción no existe!";
+            return "ERROR:¡La opción no existe!";
         }
 
-        Transaccion peticion = tipoTransaccion.crear();
+        // Crea una instancia de la transacción
+        Transaccion transaccion = tipoTransaccion.crear();
         try {
-            peticion.leer(paqueteLector);
+            transaccion.leer(paqueteLector);
         } catch (ArrayIndexOutOfBoundsException ex) {
-            return "¡Los datos son inconsistentes!";
+            return "ERROR:¡Los datos son inconsistentes!";
         } catch (NumberFormatException ex) {
-            return "¡Los valores enteros son incorrectos!";
+            return "ERROR:¡Los valores enteros son incorrectos!";
         } catch (IOException e) {
-            return "¡Ha ocurrido un error inesperado!";
+            return "ERROR:¡Ha ocurrido un error inesperado!";
         }
 
 
-        lector.resolver(clienteIp, peticion, escritor);
+        lector.resolver(clienteIp, transaccion, escritor);
         String resultado = escritor.resultado();
 
         System.out.println("[Cliente] [" + clienteIp + "] ====================================");
         System.out.println("[Cliente] [" + clienteIp + "] Ejecutando:");
-        System.out.println("[Cliente] [" + clienteIp + "]   - Transacción: " + peticion);
+        System.out.println("[Cliente] [" + clienteIp + "]   - Transacción: " + transaccion);
         System.out.println("[Cliente] [" + clienteIp + "]   - Resultado: " + resultado);
         System.out.println("[Cliente] [" + clienteIp + "] ====================================");
 
@@ -61,9 +63,11 @@ public class ProtocoloManager {
 
         PaqueteEscritor escritor = new PaqueteEscritor();
 
+        // Escribir datos de transacción
         escritor.escribirCadena(transaccion.getId().name());
         transaccion.escribir(escritor);
 
+        // Resultado: EVENTO, informacion...
         salida.writeUTF(escritor.resultado());
 
         // Resultado

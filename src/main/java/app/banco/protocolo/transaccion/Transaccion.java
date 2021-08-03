@@ -22,7 +22,6 @@ public abstract class Transaccion {
     }
 
     public void escribir(PaqueteEscritor salida) throws IOException {
-
     }
 
 }
